@@ -73,6 +73,7 @@ $sql_query_visitor = "INSERT INTO games.under_visitors (id, first_name, last_nam
 
 $sql_result = mysqli_query ($connect, $sql_query_visitor);
 
+// Старый блок для вывода контрольных значений. Монжо удалить
 // echo $id . '<br>';
 // echo $first_name . '<br>';
 // echo $last_name . '<br>';
