@@ -56,6 +56,8 @@ $data = Array
 $today = date("Y-m-d H:i:s"); //формат дата-время в формате MySQL DATATIME
 echo '<p>' . $today . '<p>';
 
+echo $data ['message']['chat']['id'] . ' <= Цифры видно? ' . '<br>';
+
 $data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
 
 $message = mb_strtolower(($data['text'] ? $data['text'] : $data['data']),'utf-8');
@@ -66,8 +68,6 @@ $last_name = $data ['from']['last_name'];
 $username = $data ['from']['username'];
 $language_code = $data ['from']['language_code'];
 
-echo $id . "<br>";
-echo $username . "<br>";
 
 // Заносим в базу любого посетителя
 
@@ -75,18 +75,12 @@ $sql_query_visitor = "INSERT INTO games.under_visitors (id, first_name, last_nam
 
 $sql_result = mysqli_query ($connect, $sql_query_visitor);
 
-// Старый блок для вывода контрольных значений. Можно удалить
-// echo $id . '<br>';
-// echo $first_name . '<br>';
-// echo $last_name . '<br>';
-// echo $username . '<br>';
-// echo $language_code . '<br>';
 
 // Тест для проверки вычисления разницы во времени
 
 
 $origin = date_create('2020-08-13 18:57:48');
-$target = date_create('2019-08-13 18:57:48');
+$target = date_create('2019-12-13 18:57:48');
 $time_interval = date_diff($origin, $target);
 // echo $time_interval . ' - Интервал<br>';
 echo $time_interval->format('%a дней') . '<br>';
@@ -101,22 +95,23 @@ $sql_result = mysqli_query ($connect, $sql_query_gamers);
 
 
 while ($row = mysqli_fetch_array($sql_result)) {
-    $gamer_exist = $row['Count(id)'];
+    $gamer_exist = $row['Count(id)']; // подсчитываем количество строк в запросе
 }
 
-// Контроль знасения поиска игрока
-echo '<br> Количество записей игрока = ' . $gamer_exist . '<br>';
+// Контроль значения поиска игрока
+echo '<br> Количество записей игрока (gamer_exist) = ' . $gamer_exist . '<br>';
 
 // Пеоведение по результату поиска игрока
-if ($gamer_exist = 0) {
+if ($gamer_exist == 0) {
 
-    echo "Привет, $username, хочешь съиграть в игру?";
+    echo "Привет, $first_name, хочешь сыграть в игру?"; // "сЫграть" - так правильно. см. Правописание гласных после приставок.
+    // Тут будет действие по отправке кнопок игроку "Да" и "Нет"
 
 }
 
 else {
 
-// тут должен быть код продолжения. Сначала оцениваем время, прошедшее с прошлого взода, и если прошло более суток - спрашваем - хотите ли продолжжить?
+// тут должен быть код продолжения. Сначала оцениваем время, прошедшее с прошлого входа, и если прошло более суток - спрашваем - хотите ли продолжжить?
 // Далее - либо да, либо нет.
 //
 
@@ -126,7 +121,7 @@ $sql_result = mysqli_query ($connect, $sql_query_continue);
 
 while ($row = mysqli_fetch_array($sql_result)) {
     $gamer_last_visit = $row['date_time'];
-    echo "$gamer_last_visit";
+    echo "последний визит геймера $gamer_last_visit";
 }
 
 // echo $sql_result;
@@ -216,9 +211,9 @@ switch ($message)
 
 
 
-echo "Hello World!<br>";
+
 //echo $data [chat][id];
-echo $data ['message']['chat']['id'] . '<br>';
+echo '<br>' . $data ['message']['chat']['id'] . ' <= Цифры слева видно? ' . '<br>';
 echo $data ['chat']['first_name'];
 
  ?>
