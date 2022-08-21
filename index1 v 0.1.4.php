@@ -4,7 +4,7 @@
 // Версия для Telegram
 // Автор сюжета - Дмитрий Глуховский
 // Код - Дмитрий Попов aka Qartie. 2022 год
-// Версия 0.1.5
+// Версия 0.1.4
 
 require_once 'inqlude/database.php';
 
@@ -53,21 +53,19 @@ $data = Array
 
 );
 
+
+
+$data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
+$message = mb_strtolower(($data['text'] ? $data['text'] : $data['data']),'utf-8');
+
 $today = date("Y-m-d H:i:s"); //формат дата-время в формате MySQL DATATIME
 echo '<p>' . $today . '<p>';
 
-$data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
-
-$message = mb_strtolower(($data['text'] ? $data['text'] : $data['data']),'utf-8');
-
-$id = $data ['from']['id'];
-$first_name = $data ['from']['first_name'];
-$last_name = $data ['from']['last_name'];
-$username = $data ['from']['username'];
-$language_code = $data ['from']['language_code'];
-
-echo $id . "<br>";
-echo $username . "<br>";
+$id = $data [from][id];
+$first_name = $data [from][first_name];
+$last_name = $data [from][last_name];
+$username = $data [from][username];
+$language_code = $data [from][language_code];
 
 // Заносим в базу любого посетителя
 
@@ -218,7 +216,7 @@ switch ($message)
 
 echo "Hello World!<br>";
 //echo $data [chat][id];
-echo $data ['message']['chat']['id'] . '<br>';
-echo $data ['chat']['first_name'];
+echo $data [message][chat][id] . '<br>';
+echo $data [chat][first_name];
 
  ?>

@@ -3,8 +3,8 @@
 // Игра "Спасти Принцессу"
 // Версия для Telegram
 // Автор сюжета - Дмитрий Глуховский
-// Код - Дмитрий Попов aka Qartie. 2022 год
-// Версия 0.1.5
+// Код - Дмитрий Попов. 2022 год
+// Версия 0.1.4
 
 require_once 'inqlude/database.php';
 
@@ -53,21 +53,19 @@ $data = Array
 
 );
 
+
+
+$data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
+$message = mb_strtolower(($data['text'] ? $data['text'] : $data['data']),'utf-8');
+
 $today = date("Y-m-d H:i:s"); //формат дата-время в формате MySQL DATATIME
 echo '<p>' . $today . '<p>';
 
-$data = $data['callback_query'] ? $data['callback_query'] : $data['message'];
-
-$message = mb_strtolower(($data['text'] ? $data['text'] : $data['data']),'utf-8');
-
-$id = $data ['from']['id'];
-$first_name = $data ['from']['first_name'];
-$last_name = $data ['from']['last_name'];
-$username = $data ['from']['username'];
-$language_code = $data ['from']['language_code'];
-
-echo $id . "<br>";
-echo $username . "<br>";
+$id = $data [from][id];
+$first_name = $data [from][first_name];
+$last_name = $data [from][last_name];
+$username = $data [from][username];
+$language_code = $data [from][language_code];
 
 // Заносим в базу любого посетителя
 
@@ -75,22 +73,11 @@ $sql_query_visitor = "INSERT INTO games.under_visitors (id, first_name, last_nam
 
 $sql_result = mysqli_query ($connect, $sql_query_visitor);
 
-// Старый блок для вывода контрольных значений. Можно удалить
 // echo $id . '<br>';
 // echo $first_name . '<br>';
 // echo $last_name . '<br>';
 // echo $username . '<br>';
 // echo $language_code . '<br>';
-
-// Тест для проверки вычисления разницы во времени
-
-
-$origin = date_create('2020-08-13 18:57:48');
-$target = date_create('2019-08-13 18:57:48');
-$time_interval = date_diff($origin, $target);
-// echo $time_interval . ' - Интервал<br>';
-echo $time_interval->format('%a дней') . '<br>';
-// echo $time_interval->format('%R%a дней') . '<br>';
 
 
 // Опеределяем играл ли уже пользователь - запрашиваем наличие id в списке игороков
@@ -117,19 +104,10 @@ if ($gamer_exist = 0) {
 else {
 
 // тут должен быть код продолжения. Сначала оцениваем время, прошедшее с прошлого взода, и если прошло более суток - спрашваем - хотите ли продолжжить?
-// Далее - либо да, либо нет.
+// Далее - либо да, либюо нет.
 //
 
-$sql_query_continue = "SELECT date_time FROM games.under_gamers WHERE id = '$id'";
-$sql_result = mysqli_query ($connect, $sql_query_continue);
 
-
-while ($row = mysqli_fetch_array($sql_result)) {
-    $gamer_last_visit = $row['date_time'];
-    echo "$gamer_last_visit";
-}
-
-// echo $sql_result;
 
 }
 
@@ -218,7 +196,7 @@ switch ($message)
 
 echo "Hello World!<br>";
 //echo $data [chat][id];
-echo $data ['message']['chat']['id'] . '<br>';
-echo $data ['chat']['first_name'];
+echo $data [message][chat][id] . '<br>';
+echo $data [chat][first_name];
 
  ?>
