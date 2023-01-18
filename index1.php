@@ -130,6 +130,11 @@ while ($row = mysqli_fetch_array($sql_result)) {
 
 
 
+function gameCube ()
+{
+    $game_cube = rand(1, 6);
+    echo $game_cube;
+}
 
 
 
@@ -209,6 +214,12 @@ switch ($message)
 
 
 
+echo '<br>';
+gameCube();
+echo '<br>';
+
+gameCube();
+echo '<br>';
 
 
 
